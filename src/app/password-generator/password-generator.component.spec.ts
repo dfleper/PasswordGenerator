@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { PasswordGeneratorComponent } from './password-generator.component';
 
 describe('PasswordGeneratorComponent', () => {
