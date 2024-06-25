@@ -6,6 +6,6 @@ import { FormsModule } from '@angular/forms';
 
 bootstrapApplication(AppComponent, {
   providers: [
-    importProvidersFrom(BrowserModule, FormsModule) // Asegúrate de importar BrowserModule y FormsModule
+    importProvidersFrom(BrowserModule, FormsModule)
   ]
 }).catch(err => console.error(err));

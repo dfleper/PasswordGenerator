@@ -15,6 +15,7 @@ export class PasswordGeneratorComponent {
   includeLetters: boolean = true;
   includeNumbers: boolean = true;
   includeSymbols: boolean = true;
+  maxLength: number = 32; // Define el límite máximo de longitud
 
   onGeneratePassword() {
     const letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
