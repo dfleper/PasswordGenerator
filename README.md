@@ -2,7 +2,7 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.2.3.
 
-## [Password Generator](https://courageous-crumble-733dc6.netlify.app/) (Click Here) 
+## 💻 [Password Generator (Click Here)](https://courageous-crumble-733dc6.netlify.app/)
 
 ## Development server
 
