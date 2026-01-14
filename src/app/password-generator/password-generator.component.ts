@@ -11,26 +11,32 @@ import { FormsModule } from '@angular/forms';
 })
 export class PasswordGeneratorComponent {
   password: string = '';
-  length: number = 12;
+
+  length: number = 8;
   includeLetters: boolean = true;
   includeNumbers: boolean = true;
   includeSymbols: boolean = true;
-  maxLength: number = 32; // Define el límite máximo de longitud
+
+  maxLength: number = 20; // límite máximo
+  minLength: number = 6;  // límite mínimo
 
   onGeneratePassword() {
+    // Forzar rango permitido (6..20)
+    this.length = Math.max(this.minLength, Math.min(this.length, this.maxLength));
+
     const letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const numbers = '0123456789';
     const symbols = '!@#$%^&*()_+';
     let validChars = '';
 
-    if (this.includeLetters) {
-      validChars += letters;
-    }
-    if (this.includeNumbers) {
-      validChars += numbers;
-    }
-    if (this.includeSymbols) {
-      validChars += symbols;
+    if (this.includeLetters) validChars += letters;
+    if (this.includeNumbers) validChars += numbers;
+    if (this.includeSymbols) validChars += symbols;
+
+    // Si no hay opciones marcadas, no se puede generar
+    if (!validChars) {
+      this.password = '';
+      return;
     }
 
     let generatedPassword = '';
@@ -40,5 +46,10 @@ export class PasswordGeneratorComponent {
     }
 
     this.password = generatedPassword;
+  }
+
+  // Opcional: recorta el valor cuando el usuario termine de editar (blur)
+  onLengthBlur() {
+    this.length = Math.max(this.minLength, Math.min(this.length, this.maxLength));
   }
 }
