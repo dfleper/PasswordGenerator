@@ -63,7 +63,7 @@ http://localhost:4200/
   <img src="./screenshots/screenshot_mac.png" alt="Vista Mac" width="600" />
 </p>
 
-## 🛠 Requirements / Requisitos
+## 🛠 Requirements
 
 - 🛠 **[Visual Studio Code](https://code.visualstudio.com/)**  
 - 🛠 **[Node.js](https://nodejs.org/)** 
