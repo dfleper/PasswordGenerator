@@ -57,8 +57,11 @@ http://localhost:4200/
 ---
 
 ## 📸 ScreenShots
-<img src="./screenshots/screenshot_movil.png" alt="Vista Móvil" width="300">
-<img src="./screenshots/screenshot_mac.png" alt="Vista Mac" width="600">
+
+<p float="left">
+  <img src="./screenshots/screenshot_movil.png" alt="Vista Móvil" width="200" />
+  <img src="./screenshots/screenshot_mac.png" alt="Vista Mac" width="700" />
+</p>
 
 ## 🛠 Requirements / Requisitos
 
