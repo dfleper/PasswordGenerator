@@ -10,46 +10,73 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./password-generator.component.css']
 })
 export class PasswordGeneratorComponent {
-  password: string = '';
+  password = '';
 
-  length: number = 8;
-  includeLetters: boolean = true;
-  includeNumbers: boolean = true;
-  includeSymbols: boolean = true;
+  length = 8;
+  includeLetters = true;
+  includeNumbers = true;
+  includeSymbols = true;
 
-  maxLength: number = 20; // límite máximo
-  minLength: number = 6;  // límite mínimo
+  readonly maxLength = 20;
+  readonly minLength = 6;
 
-  onGeneratePassword() {
-    // Forzar rango permitido (6..20)
-    this.length = Math.max(this.minLength, Math.min(this.length, this.maxLength));
+  onGeneratePassword(): void {
+    this.normalizeLength();
 
     const letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const numbers = '0123456789';
     const symbols = '!@#$%^&*()_+';
-    let validChars = '';
+    const enabledCharacterSets: string[] = [];
 
-    if (this.includeLetters) validChars += letters;
-    if (this.includeNumbers) validChars += numbers;
-    if (this.includeSymbols) validChars += symbols;
+    if (this.includeLetters) enabledCharacterSets.push(letters);
+    if (this.includeNumbers) enabledCharacterSets.push(numbers);
+    if (this.includeSymbols) enabledCharacterSets.push(symbols);
 
-    // Si no hay opciones marcadas, no se puede generar
-    if (!validChars) {
+    if (enabledCharacterSets.length === 0) {
       this.password = '';
       return;
     }
 
-    let generatedPassword = '';
-    for (let i = 0; i < this.length; i++) {
-      const index = Math.floor(Math.random() * validChars.length);
-      generatedPassword += validChars[index];
+    const validChars = enabledCharacterSets.join('');
+    const generatedPassword = enabledCharacterSets.map(
+      characterSet => characterSet[this.secureRandomIndex(characterSet.length)]
+    );
+
+    while (generatedPassword.length < this.length) {
+      generatedPassword.push(validChars[this.secureRandomIndex(validChars.length)]);
     }
 
-    this.password = generatedPassword;
+    for (let i = generatedPassword.length - 1; i > 0; i--) {
+      const swapIndex = this.secureRandomIndex(i + 1);
+      [generatedPassword[i], generatedPassword[swapIndex]] =
+        [generatedPassword[swapIndex], generatedPassword[i]];
+    }
+
+    this.password = generatedPassword.join('');
   }
 
-  // Opcional: recorta el valor cuando el usuario termine de editar (blur)
-  onLengthBlur() {
-    this.length = Math.max(this.minLength, Math.min(this.length, this.maxLength));
+  onLengthBlur(): void {
+    this.normalizeLength();
+  }
+
+  private normalizeLength(): void {
+    const numericLength = Number(this.length);
+    const safeLength = Number.isFinite(numericLength)
+      ? Math.trunc(numericLength)
+      : this.minLength;
+
+    this.length = Math.max(this.minLength, Math.min(safeLength, this.maxLength));
+  }
+
+  private secureRandomIndex(upperBound: number): number {
+    const range = 0x1_0000_0000;
+    const unbiasedLimit = range - (range % upperBound);
+    const randomValue = new Uint32Array(1);
+
+    do {
+      crypto.getRandomValues(randomValue);
+    } while (randomValue[0] >= unbiasedLimit);
+
+    return randomValue[0] % upperBound;
   }
 }
